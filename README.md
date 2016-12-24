@@ -25,7 +25,7 @@ We carry out a sort of unification on propositional formulas to create a grammer
 
 See here for information on the unification algorithm: https://en.wikipedia.org/wiki/Unification_(computer_science)
 
-# Why does this matter?
+# Why does it matter?
 
 (1) Determining whether or not a propositional formula is a tautology is a classical coNP-complete problem.
 
