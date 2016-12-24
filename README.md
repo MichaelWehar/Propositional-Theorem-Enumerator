@@ -2,7 +2,7 @@
 
 - See short blog article on "Mathematical Logic Tools and Games": http://michaelwehar.com/project1.html
 
-- See informal write-up on related independent study at University at Buffalo (minor revision made): http://michaelwehar.com/documents/independent_study.pdf
+- See informal write-up on related independent study at University at Buffalo (with minor revisions): http://michaelwehar.com/documents/independent_study.pdf
 
 - See this branch for probabilistic theorem enumeration and tautology benchmarks:
 https://github.com/MichaelWehar/Propositional-Theorem-Enumerator/tree/Generating-Benchmarks
