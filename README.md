@@ -1,3 +1,12 @@
+# Prior Work
+
+- See short blog article on "Mathematical Logic Tools and Games": http://michaelwehar.com/project1.html
+
+- See informal write-up on related independent study at University at Buffalo: http://michaelwehar.com/documents/independent_study.pdf
+
+- See branch for probabilistic theorem enumeration and propositional theorem prover benchmarks:
+https://github.com/MichaelWehar/Propositional-Theorem-Enumerator/tree/Generating-Benchmarks
+
 # Background
 
 A statement in propositional calculus might be a tautology, a contradiction, or neither.
@@ -18,20 +27,12 @@ See here for information on the unification algorithm: https://en.wikipedia.org/
 
 # Why does this matter?
 
-Determining whether or not a propositional formula is a tautology is a classical coNP-complete problem.
+(1) Determining whether or not a propositional formula is a tautology is a classical coNP-complete problem.
 
 Information on coNP: https://en.wikipedia.org/wiki/Co-NP-complete
 
 The problem of factoring an integer is in coNP.  This suggests that in some sense, the tautology problem is harder than factoring.
 
-# Benchmarks for theorem provers
+(2) A probabilistic version of this enumerator was used to create hard instance benchmarks for the tautology problem.
 
-I used a probabilistic version of this enumerator to create hard instance benchmarks for the tautology problem.
-
-Then, I ran the benchmarks on several basic theorem provers and compared the results.
-
-# Remark
-
-I once implemented a variation of this enumerator in prolog using tabling.
-
-It was only three or four lines of code, but it was quite slow and would run out of memory very quickly.
+See this branch: https://github.com/MichaelWehar/Propositional-Theorem-Enumerator/tree/Generating-Benchmarks
