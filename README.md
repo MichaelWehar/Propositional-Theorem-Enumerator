@@ -31,7 +31,7 @@ See here for information on the unification algorithm: https://en.wikipedia.org/
 
 Information on coNP: https://en.wikipedia.org/wiki/Co-NP-complete
 
-The problem of factoring an integer is in coNP.  This suggests that in some sense, the tautology problem is harder than factoring.
+The problem of factoring an integer is in coNP.  This suggests that the tautology problem might be harder than factoring.
 
 (2) A probabilistic version of this enumerator was used to create hard instance benchmarks for the tautology problem.
 
