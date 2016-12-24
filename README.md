@@ -4,7 +4,7 @@
 
 - See informal write-up on related independent study at University at Buffalo: http://michaelwehar.com/documents/independent_study.pdf
 
-- See branch for probabilistic theorem enumeration and propositional theorem prover benchmarks:
+- See this branch for probabilistic theorem enumeration and tautology benchmarks:
 https://github.com/MichaelWehar/Propositional-Theorem-Enumerator/tree/Generating-Benchmarks
 
 # Background
