@@ -5,12 +5,48 @@
  * @author Michael Wehar
  * @version 1.00 2011/6/18
  */
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public final class SchemeMethods {
 
 ///////////// PRINT /////////////
 
+	/*public static void printTest(PrintWriter writer, SchemeNode top){
+		if(top == null) return;
+
+		if(top.getType() == 0){
+			writer.print("-");
+			printTest(writer, top.right());
+		}
+		else if(top.getType() == 1){
+			writer.print("[");
+			printTest(writer, top.left());
+			writer.print(" > ");
+			printTest(writer, top.right());
+			writer.print("]");
+		}
+		else if(top.getType() > 26) writer.print((top.getType()-2));
+		else writer.print((char)(top.getType()-2+65));
+	}*/
+	
+	public static void printTest(PrintWriter writer, SchemeNode top){
+		if(top == null) return;
+
+		if(top.getType() == 0){
+			writer.print("~");
+			printTest(writer, top.right());
+		}
+		else if(top.getType() == 1){
+			writer.print("(");
+			printTest(writer, top.left());
+			writer.print(" -> ");
+			printTest(writer, top.right());
+			writer.print(")");
+		}
+		else writer.print("P" + (top.getType()-2));
+	}
+	
 	public static void printTest(SchemeNode top){
 		if(top == null) return;
 
@@ -29,22 +65,31 @@ public final class SchemeMethods {
 			System.out.print((char)(top.getType()-2+65));
 		}
 	}
-
-	public static void getSize(SchemeNode top, DynamicInteger temp){
-		if(top == null) return;
+	
+	public static int varCount(SchemeNode top){
+		if(top == null) return 0;
 
 		if(top.getType() == 0){
-			temp.setVal(temp.getVal()+1);
-			getSize(top.right(),temp);
+			return varCount(top.right());
 		}
 		else if(top.getType() == 1){
-			temp.setVal(temp.getVal()+1);
-			getSize(top.left(),temp);
-			getSize(top.right(),temp);
+			return Math.max(varCount(top.left()), varCount(top.right()));
 		}
-		//else{
-		//	temp.setVal(temp.getVal()+1);
-		//}
+		else return top.getType()-1;
+	}
+	
+	public static int getSize(SchemeNode top){
+		if(top == null) return 0;
+
+		if(top.getType() == 0){
+			return getSize(top.right()) + 1;
+		}
+		else if(top.getType() == 1){
+			return getSize(top.left()) + getSize(top.right()) + 1;
+		}
+		else{
+			return 1;
+		}
 	}
 
 	public static ArrayList<Integer> convertString(String s){

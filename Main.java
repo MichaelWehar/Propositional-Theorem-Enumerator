@@ -7,14 +7,20 @@
  * @updated 2016/12/19
  */
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
 
-    public static void main(String[] args){
-    	final int LENGTH = 5; // Represents the search depth
-    	final int LIST = 20; // Represents the maximum value for the histogram
-    	final int GAP = 100; // Increments before printing to show progress
+    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException{
+    	final int LENGTH = 100; // Represents the search depth
+    	final int GAP = 10000; // Increments before printing to show progress
+    	final double PROB = 0.1d; // Weighted coin
+    	final int MAX = 10000; // Maximum number of theorems
     	int count = 0;
     	
     	
@@ -93,129 +99,96 @@ public class Main {
     	System.out.println("Progress:");
     	
     	/* Iterative process to generate theorems */
-    	for(int i=0; i<LENGTH; i++){
+    	for(int i=0; i<LENGTH && array.size() < MAX; i++){
+    		System.out.println("Trial Initiated: " + i + ", Array Size: " + array.size());
+    		
     		int n = array.size();
 
-    		for(int j=0; j<n; j++){
-    			for(int k=0; k<n; k++){
-
-					count++;
-					if(count%GAP == 0)
-						System.out.println(count);
-
-    				SchemeNode jHead = array.get(j).getHead();
-    				SchemeNode kHead = array.get(k).getHead();
-
-    				if(jHead.getType() == 1){
-
-    					SchemeNode copyOfJ = new SchemeNode(jHead.getType());
-    					SchemeMethods.copy(jHead,copyOfJ);
-    					int p = SchemeMethods.relabel(copyOfJ,0);
-
-    					SchemeNode copyOfK = new SchemeNode(kHead.getType());
-    					SchemeMethods.copy(kHead,copyOfK);
-    					int q = SchemeMethods.relabel(copyOfK,p);
-
-
-    					SchemeNode temp = SchemeMethods.intersection(copyOfJ.left(),copyOfK,q);
-
-    					if(temp != null){
-							temp = SchemeMethods.fix(copyOfJ,temp);
-							SchemeMethods.relabel(temp.right(),0);
-
-							Scheme tempScheme = new Scheme();
-							tempScheme.setHead(temp.right());
-
-							boolean add=true;
-							for(int m=0; m<array.size(); m++){
-								if(SchemeMethods.compare(tempScheme,array.get(m))){
-									add=false;
-
-									/*System.out.print("1: ");
-    								SchemeMethods.printTest(array.get(m).getHead());
-    								System.out.println();
-    								System.out.print("2: ");
-    								SchemeMethods.printTest(temp);
-    								System.out.println();*/
-
-									break;
+    		for(int j=0; j<n && array.size() < MAX; j++){
+    			for(int k=0; k<n && array.size() < MAX; k++){
+    				if(Math.random() < PROB){
+						
+    					/* Display Progress */
+    					count++;
+						if(count%GAP == 0)
+							System.out.println("-> (" + count + "," + array.size() + ")");
+						
+						int depth = Math.max(array.get(j).getDepth(), array.get(k).getDepth())+1;
+	
+	    				SchemeNode jHead = array.get(j).getHead();
+	    				SchemeNode kHead = array.get(k).getHead();
+	
+	    				if(jHead.getType() == 1){
+	
+	    					SchemeNode copyOfJ = new SchemeNode(jHead.getType());
+	    					SchemeMethods.copy(jHead,copyOfJ);
+	    					int p = SchemeMethods.relabel(copyOfJ,0);
+	
+	    					SchemeNode copyOfK = new SchemeNode(kHead.getType());
+	    					SchemeMethods.copy(kHead,copyOfK);
+	    					int q = SchemeMethods.relabel(copyOfK,p);
+	
+	
+	    					SchemeNode temp = SchemeMethods.intersection(copyOfJ.left(),copyOfK,q);
+	
+	    					if(temp != null){
+								temp = SchemeMethods.fix(copyOfJ,temp);
+								SchemeMethods.relabel(temp.right(),0);
+	
+								Scheme tempScheme = new Scheme();
+								tempScheme.setHead(temp.right());
+								tempScheme.setDepth(depth);
+								
+								boolean add=true;
+								for(int m=0; m<array.size(); m++){
+									if(SchemeMethods.compare(tempScheme,array.get(m))){
+										add=false;
+	
+										/*System.out.print("1: ");
+	    								SchemeMethods.printTest(array.get(m).getHead());
+	    								System.out.println();
+	    								System.out.print("2: ");
+	    								SchemeMethods.printTest(temp);
+	    								System.out.println();*/
+	
+										break;
+									}
+									else if(SchemeMethods.compare(array.get(m),tempScheme)){
+										array.set(m,tempScheme);
+										add=false;
+										break;
+									}
 								}
-								else if(SchemeMethods.compare(array.get(m),tempScheme)){
-									array.set(m,tempScheme);
-									add=false;
-									break;
-								}
-							}
-
-							if(add)
-								array.add(tempScheme);
+	
+								if(add)
+									array.add(tempScheme);
+	    					}
     					}
     				}
     			}
     		}
     	}
 
+    	/* Short theorems based on depth, varcount, and size */
+    	SchemeComparator comparator = new SchemeComparator();
+    	Scheme[] list = new Scheme[0];
+    	list = array.toArray(list);
+    	Arrays.sort(list, comparator);
     	
-    	/* Print all theorems */
-    	System.out.println();
-    	System.out.println("Theorems:");
-    	for(int i=0; i<array.size(); i++){
-    		System.out.print(": ");
-    		SchemeMethods.printTest(array.get(i).getHead());
-    		System.out.println();
+    	/* Writes theorems to file */
+    	PrintWriter writer = new PrintWriter(new File("Out" + MAX + "_" + LENGTH + "_" + PROB + ".dat"), "UTF-8");
+    	for(int i=0; i<list.length; i++){
+    		
+    		int varCount = SchemeMethods.varCount(list[i].getHead());
+    		int size = SchemeMethods.getSize(list[i].getHead());
+    		
+    		writer.print(list[i].getDepth() + "," + varCount + "," + size + ": ");
+    		SchemeMethods.printTest(writer, list[i].getHead());
+    		writer.println();
     	}
     	
-
-    	/* Histogram data for number of theorems of each length or variable count */
-		int[] list = new int[LIST];
-		int maxLength = 0;
-		double totalLength = 0;
-
-		int[] list2 = new int[LIST];
-		int maxVarCount = 0;
-		double totalVarCount = 0;
-
-		for(int i=0; i<array.size(); i++){
-			DynamicInteger j = new DynamicInteger(0);
-			SchemeMethods.getSize(array.get(i).getHead(),j);
-
-			int varCount = SchemeMethods.relabel(array.get(i).getHead(),0);
-
-			if(j.getVal() < LIST) list[j.getVal()]++;
-			if(varCount < LIST) list2[varCount]++;
-
-			if(j.getVal() > maxLength) maxLength = j.getVal();
-			if(varCount > maxVarCount) maxVarCount = varCount;
-
-			totalLength+=j.getVal();
-			totalVarCount+=varCount;
-
-			//if(j.getVal() <= 3){
-			//	System.out.print(": ");
-    		//	SchemeMethods.printTest(array.get(i).getHead());
-    		//	System.out.println();
-			//}
-		}
-
-		/* Statistics 1 */
-		System.out.println();
-		System.out.println("Counting the number of theorems of given lengths: ");
-
-    	for(int i=0; i<LIST; i++){
-    		System.out.println(i + ": " + list[i] + ", " + list2[i]);
-    	}
+    	writer.close();
     	
-    	
-    	/* Statistics 2 */
-		double avgLength=totalLength/array.size();
-		double avgVarCount=totalVarCount/array.size();
-		
-		System.out.println();
-		System.out.println("Maximum Scheme Length: " + maxLength);
-		System.out.println("Maximum Variable Count: " + maxVarCount);
-		System.out.println("Average Scheme Length: " + avgLength);
-		System.out.println("Average Variable Count: " + avgVarCount);
-    	System.out.println("Array Size: " + array.size());
     }
 
 }

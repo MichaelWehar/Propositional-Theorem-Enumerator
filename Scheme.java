@@ -5,11 +5,12 @@
  * @author Michael Wehar
  * @version 1.00 2011/6/16
  */
-
+import java.util.ArrayList;
 
 public class Scheme {
 
 	private SchemeNode head;
+	private int depth = 0;
 
 	public Scheme(){}
 
@@ -30,6 +31,14 @@ public class Scheme {
 
 	public void setHead(SchemeNode h){
 		head = h;
+	}
+	
+	public int getDepth(){
+		return depth;
+	}
+	
+	public void setDepth(int d){
+		depth = d;
 	}
 
     public void constructTree(Formula f, SchemeNode top){
