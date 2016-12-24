@@ -13,7 +13,7 @@ A statement in propositional calculus might be a tautology, a contradiction, or 
 
 If it is a tautology, then that means is has a proof.  That is, there is a sequence of applications of inference rules and axioms that leads you to the tautology.
 
-But, is there a smallest proof?  How many theorems have short proofs?
+But, is there a short proof?  How many theorems have short proofs?
 
 There are many different axiom systems for propositional calculus.  Take a look at some examples here: https://en.wikipedia.org/wiki/List_of_logic_systems
 
