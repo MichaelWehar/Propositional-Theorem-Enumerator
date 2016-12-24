@@ -2,7 +2,7 @@
 
 - See short blog article on "Mathematical Logic Tools and Games": http://michaelwehar.com/project1.html
 
-- See informal write-up on related independent study at University at Buffalo: http://michaelwehar.com/documents/independent_study.pdf
+- See informal write-up on related independent study at University at Buffalo (minor revision made): http://michaelwehar.com/documents/independent_study.pdf
 
 - See this branch for probabilistic theorem enumeration and tautology benchmarks:
 https://github.com/MichaelWehar/Propositional-Theorem-Enumerator/tree/Generating-Benchmarks
@@ -13,7 +13,7 @@ A statement in propositional calculus might be a tautology, a contradiction, or 
 
 But, is there a short proof?  How many theorems have short proofs?
 
-There are many different axiom systems for propositional calculus.  Whether or not a theorem has a short proof may depend on the axiom system that is used.  In addition, the number of theorems with short proofs may vary with the axiom system as well.
+There are many different axiom systems for propositional calculus.  Whether or not a theorem has a short proof may depend on the axiom system that is used.  In addition, the number of theorems with short proofs may vary with the axiom system.
 
 Take a look at some example axiom systems: https://en.wikipedia.org/wiki/List_of_logic_systems
 
